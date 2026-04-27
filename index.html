@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KTTPANEL V2</title>
+    <title>KTTPANEL V2 - NO ROOT</title>
     <style>
         body {
             background-color: #0d0000;
@@ -18,30 +18,39 @@
         }
         .panel {
             background: rgba(20, 0, 0, 0.95);
-            padding: 30px;
+            padding: 25px;
             border-radius: 20px;
             border: 2px solid #ff0000;
             box-shadow: 0 0 25px #ff0000;
             text-align: center;
-            width: 260px;
+            width: 280px;
         }
-        h2 { color: #ff0000; text-shadow: 0 0 10px #ff0000; margin-bottom: 30px; }
+        h2 { color: #ff0000; text-shadow: 0 0 10px #ff0000; margin-bottom: 10px; }
+        .no-root-tag {
+            background: #ff0000;
+            color: black;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 2px 10px;
+            border-radius: 5px;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
         
-        .switch-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .status-card {
             background: rgba(255, 255, 255, 0.05);
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 40px;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
         }
 
+        /* สวิตช์สลับ เปิด/ปิด */
         .switch {
             position: relative;
             display: inline-block;
-            width: 50px;
-            height: 26px;
+            width: 60px;
+            height: 30px;
+            margin-top: 10px;
         }
         .switch input { opacity: 0; width: 0; height: 0; }
         .slider {
@@ -55,44 +64,68 @@
         .slider:before {
             position: absolute;
             content: "";
-            height: 18px; width: 18px;
+            height: 22px; width: 22px;
             left: 4px; bottom: 4px;
             background-color: white;
             transition: .4s;
             border-radius: 50%;
         }
-        input:checked + .slider { background-color: #ff0000; }
-        input:checked + .slider:before { transform: translateX(24px); }
+        input:checked + .slider { background-color: #00ff00; }
+        input:checked + .slider:before { transform: translateX(30px); }
 
-        .btn-lock {
-            background: linear-gradient(145deg, #ff0000, #b30000);
-            color: white;
-            border: none;
-            padding: 15px;
+        #status-text {
             font-size: 20px;
             font-weight: bold;
-            border-radius: 12px;
-            cursor: pointer;
-            width: 100%;
-            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.4);
-            text-transform: uppercase;
+            margin-top: 10px;
+            display: block;
         }
-        .btn-lock:active { transform: scale(0.96); box-shadow: 0 2px 5px rgba(255, 0, 0, 0.4); }
+        .text-off { color: #ff0000; }
+        .text-on { color: #00ff00; }
+
+        .credit {
+            margin-top: 20px;
+            font-size: 13px;
+            color: #888;
+            border-top: 1px solid #333;
+            padding-top: 15px;
+        }
+        .credit b { color: #ff0000; }
     </style>
 </head>
 <body>
 
 <div class="panel">
     <h2>KTTPANEL V2</h2>
-    <div class="switch-container">
-        <span style="font-size: 18px;">สถานะระบบ</span>
+    <div class="no-root-tag">SUPPORT NO ROOT</div>
+    
+    <div class="status-card">
+        <span id="status-text" class="text-off">ล็อคปิดอยู่</span>
         <label class="switch">
-            <input type="checkbox">
+            <input type="checkbox" id="lock-switch" onchange="updateStatus()">
             <span class="slider"></span>
         </label>
     </div>
-    <button class="btn-lock">ล็อคket</button>
+
+    <div class="credit">
+        CREATED BY: <b>KVT PHASPHLHELA</b><br>
+        VERSION: 2.0 (STABLE)
+    </div>
 </div>
+
+<script>
+    function updateStatus() {
+        const checkbox = document.getElementById('lock-switch');
+        const statusText = document.getElementById('status-text');
+        
+        if (checkbox.checked) {
+            statusText.innerText = "ล็อคเปิดแล้ว";
+            statusText.className = "text-on";
+        } else {
+            statusText.innerText = "ล็อคปิดอยู่";
+            statusText.className = "text-off";
+        }
+    }
+</script>
 
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KTTPANEL V2 - NO ROOT</title>
+    <title>KTT PANEL OFFICIAL</title>
     <style>
         body {
             background-color: #0d0000;
@@ -15,117 +15,342 @@
             font-family: 'Arial', sans-serif;
             color: white;
             overflow: hidden;
+            user-select: none;
         }
-        .panel {
-            background: rgba(20, 0, 0, 0.95);
-            padding: 25px;
-            border-radius: 20px;
+
+        .main-container {
+            position: relative;
+            width: 330px;
+            height: 640px;
+        }
+
+        /* หน้า Login */
+        #login-page {
+            position: absolute;
+            z-index: 10;
+            width: 100%;
+            height: 100%;
+            background-color: #1a0202;
+            border-radius: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             border: 2px solid #ff0000;
-            box-shadow: 0 0 25px #ff0000;
-            text-align: center;
-            width: 280px;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+            transition: 0.5s;
         }
-        h2 { color: #ff0000; text-shadow: 0 0 10px #ff0000; margin-bottom: 10px; }
-        .no-root-tag {
-            background: #ff0000;
-            color: black;
-            font-size: 12px;
-            font-weight: bold;
-            padding: 2px 10px;
-            border-radius: 5px;
-            display: inline-block;
-            margin-bottom: 20px;
-        }
-        
-        .status-card {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 20px;
-            border-radius: 15px;
+
+        .input-wrapper {
+            position: relative;
+            width: 80%;
             margin-bottom: 20px;
         }
 
-        /* สวิตช์สลับ เปิด/ปิด */
+        .login-input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid #ff0000;
+            background: rgba(255, 0, 0, 0.1);
+            color: white;
+            text-align: center;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        .toggle-pass {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 12px;
+            color: #ff4d4d;
+        }
+
+        /* หน้าหลัก (ซ่อนไว้ก่อน) */
+        #main-panel {
+            display: none;
+        }
+
+        .red-line-glow {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: 35px;
+            border: 2.5px solid rgba(255, 0, 0, 0.7);
+            box-shadow: 0 0 25px rgba(255, 0, 0, 0.6);
+            z-index: 1;
+            animation: moveRedLine 4s infinite ease-in-out;
+        }
+
+        @keyframes moveRedLine {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.03); opacity: 1; box-shadow: 0 0 35px rgba(255, 0, 0, 0.8); }
+        }
+
+        .card {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            height: 100%;
+            background-color: #1a0202;
+            border-radius: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 25px;
+            box-sizing: border-box;
+        }
+
+        h1 { font-size: 40px; margin: 0; color: white; letter-spacing: 2px; }
+        h2 { color: #ff0000; font-size: 20px; margin-bottom: 30px; text-shadow: 0 0 10px rgba(255,0,0,0.5); }
+        
+        #status-text { font-size: 16px; color: #ff0000; margin-bottom: 20px; min-height: 18px; font-weight: bold; }
+
+        .info-box {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-left: 4px solid #ff0000;
+            text-align: center;
+        }
+
+        .status-active { color: #00ff00; font-weight: bold; }
+
+        .switch-group {
+            width: 100%;
+            background: rgba(255, 0, 0, 0.05);
+            border-radius: 15px;
+            padding: 10px 15px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 0, 0, 0.2);
+        }
+
+        .switch-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+        }
+
         .switch {
             position: relative;
             display: inline-block;
-            width: 60px;
-            height: 30px;
-            margin-top: 10px;
+            width: 46px;
+            height: 22px;
         }
+
         .switch input { opacity: 0; width: 0; height: 0; }
-        .slider {
+
+        .slider-switch {
             position: absolute;
             cursor: pointer;
             top: 0; left: 0; right: 0; bottom: 0;
             background-color: #444;
             transition: .4s;
-            border-radius: 34px;
+            border-radius: 20px;
         }
-        .slider:before {
+
+        .slider-switch:before {
             position: absolute;
             content: "";
-            height: 22px; width: 22px;
-            left: 4px; bottom: 4px;
+            height: 16px; width: 16px;
+            left: 3px; bottom: 3px;
             background-color: white;
             transition: .4s;
             border-radius: 50%;
         }
-        input:checked + .slider { background-color: #00ff00; }
-        input:checked + .slider:before { transform: translateX(30px); }
 
-        #status-text {
-            font-size: 20px;
+        input:checked + .slider-switch { background-color: #00b300; }
+        input:checked + .slider-switch:before { transform: translateX(24px); }
+
+        .slider-container { width: 100%; margin-bottom: 25px; }
+        .slider-label { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 8px; color: #ffcccc; }
+        input[type=range] { width: 100%; accent-color: #ff0000; cursor: pointer; }
+
+        .btn {
+            width: 160px;
+            padding: 14px 0;
+            border-radius: 15px;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+            color: white;
             font-weight: bold;
-            margin-top: 10px;
-            display: block;
+            transition: 0.3s;
+            margin-bottom: 20px;
         }
-        .text-off { color: #ff0000; }
-        .text-on { color: #00ff00; }
 
-        .credit {
-            margin-top: 20px;
-            font-size: 13px;
-            color: #888;
-            border-top: 1px solid #333;
-            padding-top: 15px;
+        .btn-red { background-color: #ff0000; box-shadow: 0 4px 15px rgba(255,0,0,0.4); }
+        .btn-green { background-color: #00b300; box-shadow: 0 4px 15px rgba(0,179,0,0.4); }
+        .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        .credit-section {
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 10px;
+            width: 100%;
         }
-        .credit b { color: #ff0000; }
+
+        .credit-name { color: #ff4d4d; font-weight: bold; }
+        .os-notice { font-size: 10px; color: #555; margin-top: 4px; display: block; }
     </style>
 </head>
 <body>
 
-<div class="panel">
-    <h2>KTTPANEL V2</h2>
-    <div class="no-root-tag">SUPPORT NO ROOT</div>
-    
-    <div class="status-card">
-        <span id="status-text" class="text-off">ล็อคปิดอยู่</span>
-        <label class="switch">
-            <input type="checkbox" id="lock-switch" onchange="updateStatus()">
-            <span class="slider"></span>
-        </label>
+    <div class="main-container">
+        <div id="login-page">
+            <h2>KTT ACCESS</h2>
+            <div class="input-wrapper">
+                <input type="password" id="key-input" class="login-input" placeholder="กรอกรหัสผ่าน">
+                <span class="toggle-pass" onclick="togglePassword()">ดูรหัส</span>
+            </div>
+            <button class="btn btn-red" id="login-btn" onclick="checkKey()">LOGIN</button>
+            <p id="login-msg" style="font-size: 14px; margin-top: 10px; min-height: 16px; font-weight: bold;"></p>
+        </div>
+
+        <div id="main-panel">
+            <div class="red-line-glow"></div>
+            <div class="card">
+                <h1>KTT PANEL</h1>
+                <p id="status-text">ปิดใช้งานแล้ว</p>
+
+                <div class="info-box">
+                    สถานะเซิร์ฟเวอร์: <span class="status-active">สถานะเปิดใช้</span>
+                </div>
+
+                <div class="switch-group">
+                    <div class="switch-item">
+                        <span>Aim Lock 70%</span>
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider-switch"></span>
+                        </label>
+                    </div>
+                    <div class="switch-item">
+                        <span>Aim Assist</span>
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider-switch"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="slider-container">
+                    <div class="slider-label">
+                        <span>ความไวสัมผัส</span>
+                        <span id="sens-value">100%</span>
+                    </div>
+                    <input type="range" min="1" max="200" value="100" oninput="document.getElementById('sens-value').innerText = this.value + '%'">
+                </div>
+
+                <button class="btn btn-red" id="action-btn" onclick="startLoading()">START</button>
+
+                <div class="credit-section">
+                    สร้างโดย <span class="credit-name">KTT PANEL OFFICIAL</span>
+                    <span class="os-notice">รองรับระบบ ANDROID เท่านั้น</span>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="credit">
-        CREATED BY: <b>KVT PHASPHLHELA</b><br>
-        VERSION: 2.0 (STABLE)
-    </div>
-</div>
-
-<script>
-    function updateStatus() {
-        const checkbox = document.getElementById('lock-switch');
-        const statusText = document.getElementById('status-text');
-        
-        if (checkbox.checked) {
-            statusText.innerText = "ล็อคเปิดแล้ว";
-            statusText.className = "text-on";
-        } else {
-            statusText.innerText = "ล็อคปิดอยู่";
-            statusText.className = "text-off";
+    <script>
+        // ระบบซ่อน/แสดงรหัสผ่าน
+        function togglePassword() {
+            const input = document.getElementById('key-input');
+            const toggleText = document.querySelector('.toggle-pass');
+            if (input.type === "password") {
+                input.type = "text";
+                toggleText.innerText = "ซ่อน";
+            } else {
+                input.type = "password";
+                toggleText.innerText = "ดูรหัส";
+            }
         }
-    }
-</script>
+
+        // ระบบตรวจสอบรหัสผ่าน
+        function checkKey() {
+            const input = document.getElementById('key-input').value;
+            const msg = document.getElementById('login-msg');
+            const btn = document.getElementById('login-btn');
+            
+            if (input === 'ktt') {
+                btn.disabled = true;
+                msg.style.color = "#00ff00";
+                msg.innerText = "รหัสผ่านถูกต้อง";
+                
+                // รอ 1 วินาทีเพื่อให้เห็นว่ารหัสถูกก่อนเปลี่ยนหน้า
+                setTimeout(() => {
+                    document.getElementById('login-page').style.display = 'none';
+                    document.getElementById('main-panel').style.display = 'block';
+                }, 1000);
+            } else {
+                msg.style.color = "#ff0000";
+                msg.innerText = "รหัสผ่านไม่ถูกต้อง!";
+                setTimeout(() => { msg.innerText = ""; }, 2000);
+            }
+        }
+
+        // ระบบ Panel หลัก
+        let isActive = false;
+        let isProcessing = false;
+
+        function startLoading() {
+            if (isProcessing) return;
+
+            const btn = document.getElementById('action-btn');
+            const status = document.getElementById('status-text');
+            
+            isProcessing = true;
+            btn.disabled = true;
+
+            if (!isActive) {
+                let timeLeft = 2.0;
+                status.style.color = "#ffcc00";
+                
+                const timer = setInterval(() => {
+                    timeLeft -= 0.1;
+                    status.innerText = `รอสักครู่... (${timeLeft.toFixed(1)}s)`;
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(timer);
+                        activateSystem(true);
+                    }
+                }, 100);
+            } else {
+                activateSystem(false);
+            }
+        }
+
+        function activateSystem(state) {
+            const btn = document.getElementById('action-btn');
+            const status = document.getElementById('status-text');
+            
+            isActive = state;
+            isProcessing = false;
+            btn.disabled = false;
+
+            if (isActive) {
+                btn.innerText = "STOP";
+                btn.classList.remove('btn-red');
+                btn.classList.add('btn-green');
+                status.innerText = "เปิดใช้งานแล้ว";
+                status.style.color = "#00ff00";
+            } else {
+                btn.innerText = "START";
+                btn.classList.remove('btn-green');
+                btn.classList.add('btn-red');
+                status.innerText = "ปิดใช้งานแล้ว";
+                status.style.color = "#ff0000";
+            }
+        }
+    </script>
 
 </body>
 </html>
